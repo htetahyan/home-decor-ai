@@ -2,7 +2,9 @@
  * RevenueCat Configuration
  * 
  * This file contains the core RevenueCat configuration and initialization.
- * API Key: test_BhFIDFiPtakgOduTxLokRwBTNrw
+ * API keys come from EXPO_PUBLIC_REVENUECAT_IOS_KEY and
+ * EXPO_PUBLIC_REVENUECAT_ANDROID_KEY, with EXPO_PUBLIC_REVENUECAT_API_KEY
+ * as a shared fallback.
  * 
  * Products:
  * - monthly: Monthly subscription
@@ -27,9 +29,9 @@ import Purchases, {
 // ============================================================================
 
 export const REVENUECAT_CONFIG = {
-    // API Keys (use the same key for both platforms in test mode)
-    API_KEY_IOS: 'test_BhFIDFiPtakgOduTxLokRwBTNrw',
-    API_KEY_ANDROID: 'test_BhFIDFiPtakgOduTxLokRwBTNrw',
+    // Platform keys, falling back to EXPO_PUBLIC_REVENUECAT_API_KEY
+    API_KEY_IOS: process.env.EXPO_PUBLIC_REVENUECAT_IOS_KEY || process.env.EXPO_PUBLIC_REVENUECAT_API_KEY || '',
+    API_KEY_ANDROID: process.env.EXPO_PUBLIC_REVENUECAT_ANDROID_KEY || process.env.EXPO_PUBLIC_REVENUECAT_API_KEY || '',
 
     // Entitlement Identifiers (must match RevenueCat dashboard)
     ENTITLEMENTS: {
@@ -77,6 +79,13 @@ export async function initializeRevenueCat(appUserID?: string): Promise<void> {
         const apiKey = Platform.OS === 'ios'
             ? REVENUECAT_CONFIG.API_KEY_IOS
             : REVENUECAT_CONFIG.API_KEY_ANDROID;
+
+        if (!apiKey) {
+            console.warn(
+                '[RevenueCat] Missing API key. Set EXPO_PUBLIC_REVENUECAT_IOS_KEY, EXPO_PUBLIC_REVENUECAT_ANDROID_KEY, or EXPO_PUBLIC_REVENUECAT_API_KEY. Skipping configure.'
+            );
+            return;
+        }
 
         // Configure RevenueCat
         await Purchases.configure({

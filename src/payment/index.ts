@@ -8,7 +8,8 @@
  * 2. Import and call initializeRevenueCat() in App.tsx
  * 3. Use hooks or functions to check access and present paywalls
  * 
- * API Key: test_BhFIDFiPtakgOduTxLokRwBTNrw
+ * API keys: EXPO_PUBLIC_REVENUECAT_IOS_KEY, EXPO_PUBLIC_REVENUECAT_ANDROID_KEY,
+ * or EXPO_PUBLIC_REVENUECAT_API_KEY as a shared fallback.
  * Entitlement: AI Contract Analyzer
  * Products: monthly, yearly, lifetime
  */
